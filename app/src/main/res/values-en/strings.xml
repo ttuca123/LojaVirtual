@@ -1,0 +1,9 @@
+<resources>
+    <string name="app_name">Loja Virtual Inglês</string>
+
+    <string name="navigation_drawer_open">Open navigation drawer</string>
+    <string name="navigation_drawer_close">Close navigation drawer</string>
+    <string name="desc_product">Description of Product</string>
+    <string name="price_product">Price of Product</string>
+    <string name="action_settings">Settings</string>
+</resources>

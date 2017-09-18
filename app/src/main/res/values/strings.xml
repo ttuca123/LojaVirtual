@@ -1,0 +1,24 @@
+<resources>
+    <string name="app_name">Loja Virtual Português</string>
+
+    <!--Nome do menu !-->
+    <string name="home">Home</string>
+    <string name="profile">Perfil</string>
+    <string name="about">Sobre</string>
+
+
+    <string name="navigation_drawer_open">Abrir drawer</string>
+    <string name="navigation_drawer_close">Fechar navigation drawer</string>
+    <string name="btn_add_buy">Adicionar Carrinho</string>
+
+    <string name="btn_end_buy">Finalizar Compra</string>
+
+    <string name="desc_product">Abacaxi</string>
+
+    <string name="price_product">R$ 3,50</string>
+
+    <string name="action_settings">Configurações</string>
+
+    <!-- TODO: Remove or change this placeholder text -->
+    <string name="about_text">Desenvolvido por Artur Cavalcante</string>
+</resources>

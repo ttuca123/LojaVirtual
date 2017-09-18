@@ -1,0 +1,60 @@
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="150dp"
+    android:layout_height="180dp"
+    android:alpha="0.8"
+    android:background="@color/colorLight"
+    android:fitsSystemWindows="false"
+    android:orientation="vertical"
+    android:padding="2dp">
+
+    <ImageView
+        android:id="@+id/imgProduto"
+        android:layout_width="match_parent"
+        android:layout_height="103dp"
+        android:layout_above="@+id/txtDescricao"
+        android:layout_alignEnd="@+id/txtValor"
+        android:layout_alignParentStart="true"
+        android:layout_below="@+id/txtValor"
+        app:srcCompat="@drawable/aviso" />
+
+    <TextView
+        android:id="@+id/txtDescricao"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_alignParentBottom="true"
+        android:layout_alignParentStart="true"
+        android:fontFamily="sans-serif"
+        android:paddingLeft="4dp"
+        android:paddingTop="4dp"
+        android:textAppearance="?attr/textAppearanceListItem"
+        android:textSize="14sp"
+        android:typeface="sans"
+        tools:text="@string/desc_product" />
+
+    <TextView
+        android:id="@+id/txtValor"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+
+        android:layout_alignParentTop="true"
+
+        android:paddingLeft="4dp"
+        android:paddingTop="4dp"
+        android:text="@string/price_product"
+        android:textAlignment="viewStart"
+        android:textAppearance="?attr/textAppearanceListItem"
+        android:textSize="18sp" />
+
+    <CheckBox
+        android:id="@+id/chkProduto"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="Selecione" />
+
+
+</LinearLayout>
+
+
