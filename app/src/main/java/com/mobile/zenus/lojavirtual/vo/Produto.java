@@ -3,6 +3,8 @@ package com.mobile.zenus.lojavirtual.vo;
 import android.os.Parcel;
 import android.os.Parcelable;
 
+import java.util.ArrayList;
+
 /**
  * Created by Tuca on 13/09/2017.
  */
@@ -22,6 +24,8 @@ public class Produto implements Parcelable {
 
     String pathImagem;
 
+
+
     public Produto(){
 
     }
@@ -30,6 +34,7 @@ public class Produto implements Parcelable {
         descProduto = in.readString();
         quantidade = in.readInt();
         isSelecionado = in.readByte() != 0;
+        preco = in.readDouble();
         pathImagem = in.readString();
     }
 
@@ -80,6 +85,9 @@ public class Produto implements Parcelable {
     }
 
     public Double getPreco() {
+        if(preco==null){
+            preco=0.0;
+        }
         return preco;
     }
 
@@ -105,6 +113,7 @@ public class Produto implements Parcelable {
         dest.writeString(descProduto);
         dest.writeInt(quantidade);
         dest.writeByte((byte) (isSelecionado ? 1 : 0));
+        dest.writeDouble(preco);
         dest.writeString(pathImagem);
     }
 }

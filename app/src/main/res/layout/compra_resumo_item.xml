@@ -84,7 +84,7 @@
             android:layout_height="wrap_content"
             android:ems="10"
             android:inputType="number"
-            android:text="2" />
+            android:text="1" />
 
         <TextView
             android:id="@+id/txtOperacao"
@@ -139,7 +139,6 @@
             android:layout_weight="0.60"
             android:paddingLeft="4dp"
             android:paddingTop="4dp"
-            android:text="R$ 7,00"
             android:textAlignment="viewStart"
             android:textAppearance="?attr/textAppearanceListItem"
             android:textSize="18sp" />

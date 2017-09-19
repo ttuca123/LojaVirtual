@@ -64,7 +64,7 @@ public class ActMain extends AppCompatActivity
 
         android.support.v4.app.FragmentManager fragmentManager = getSupportFragmentManager();
         android.support.v4.app.FragmentTransaction fragmentTransaction = fragmentManager.beginTransaction();
-        fragmentTransaction.replace(R.id.frmProduto, fragmento);
+        fragmentTransaction.replace(R.id.frmAcao, fragmento);
         fragmentTransaction.commit();
         fragmentTransaction.attach(fragmento);
 

@@ -30,18 +30,18 @@ public class MockUtil {
         return nomeProdutos;
     }
 
-    public static List<Produto> popularProdutos() {
+    public static ArrayList<Produto> popularProdutos() {
 
         List<String> nomesProdutos = popularNomeProdutos();
 
-        List<Produto> produtos = new ArrayList<Produto>();
+        ArrayList<Produto> produtos = new ArrayList<Produto>();
 
         for(String nomeProduto: nomesProdutos){
             
             Produto produto = new Produto();
             produto.setSeqProduto(1l);
             produto.setDescProduto(nomeProduto);
-            produto.setPreco(new Double(3.5));
+            produto.setPreco(Double.valueOf(3.5));
             produto.setPathImagem(prefixo+nomeProduto+sufixo);
             produtos.add(produto);
 

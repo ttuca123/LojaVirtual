@@ -16,6 +16,7 @@ import com.mobile.zenus.lojavirtual.R;
 import com.mobile.zenus.lojavirtual.vo.Produto;
 import com.squareup.picasso.Picasso;
 
+import java.util.ArrayList;
 import java.util.Collection;
 import java.util.List;
 
@@ -28,19 +29,31 @@ import java.util.List;
 public class ProdutoAdapter extends BaseAdapter {
 
     private Context context;
-    private List<Produto> produtos;
+    private ArrayList<Produto> produtos;
 
     private LayoutInflater inflater;
 
-    public ProdutoAdapter(Context context, List<Produto> produtos){
+    public ProdutoAdapter(Context context, ArrayList<Produto> produtos){
         this.context=context;
         this.produtos = produtos;
 
     }
 
-    public Collection<Produto> getProdutos(){
+    public ArrayList<Produto> getProdutos(){
 
         return produtos;
+    }
+
+    public ArrayList<Produto> getProdutosSelecionados(){
+        ArrayList<Produto> produtosSelecionados = new ArrayList<Produto>();
+
+        for(Produto produto: produtos){
+            if(produto.isSelecionado()){
+                produtosSelecionados.add(produto);
+            }
+        }
+
+        return produtosSelecionados;
     }
 
 

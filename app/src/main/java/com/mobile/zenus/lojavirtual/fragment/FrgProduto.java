@@ -136,7 +136,7 @@ public class FrgProduto extends Fragment {
 
         GridView gridView = (GridView) view.findViewById(R.id.gdvProdutos);
 
-        final List<Produto> produtos =   MockUtil.popularProdutos();
+        final ArrayList<Produto> produtos =   MockUtil.popularProdutos();
 
         final ProdutoAdapter produtoAdapter = new ProdutoAdapter(view.getContext(), produtos);
 
@@ -145,18 +145,13 @@ public class FrgProduto extends Fragment {
         btnAdd.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                int cont =0;
-                for(Produto produto: produtoAdapter.getProdutos()){
-                    if(produto.isSelecionado()){
-                        cont++;
-                        break;
-                    }
-                }
-                if(cont>0){
+
+                ArrayList<Produto> produtosSelecionados = produtoAdapter.getProdutosSelecionados();
+
+                if(produtosSelecionados.size()>0){
+
                     Intent it = new Intent(view.getContext(), ActResumoCompras.class);
-//                    Produto[] produtos = produtoAdapter.getProdutos();
-//
-//                    it.putExtra("produtos", produtoAdapter.getProdutos());
+                    it.putParcelableArrayListExtra("produtos", produtosSelecionados);
                     startActivity(it);
 
 //                    Toast.makeText(v.getContext(), "Existe pelo menos um produto selecionado", Toast.LENGTH_SHORT).show();

@@ -3,16 +3,12 @@ package com.mobile.zenus.lojavirtual.adapter;
 import android.content.Context;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
-import android.view.KeyEvent;
 import android.view.LayoutInflater;
-import android.view.MotionEvent;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ArrayAdapter;
 import android.widget.EditText;
-import android.widget.ImageButton;
 import android.widget.TextView;
-import android.widget.Toast;
 
 import com.mobile.zenus.lojavirtual.R;
 import com.mobile.zenus.lojavirtual.vo.Produto;
@@ -57,12 +53,18 @@ public class ResumoProdutoAdapter extends ArrayAdapter<Produto> {
         mDescricao.setText((position+1) + " - "+produtos.get(position).getDescProduto());
         mValorUnitario.setText(produtos.get(position).getPreco().toString());
 
+        Double total = calculaTotalParcial(Integer.parseInt(mEdtQuantidade.getText().toString()), Double.parseDouble(mValorUnitario.getText().toString()));
+
+        mTotal.setText("R$ "+total.toString());
+
         mEdtQuantidade.setOnFocusChangeListener(new View.OnFocusChangeListener() {
             @Override
             public void onFocusChange(View v, boolean hasFocus) {
                 if(mEdtQuantidade.getText().length()>0){
-                    Double total = Integer.parseInt(mEdtQuantidade.getText().toString())*Double.parseDouble(mValorUnitario.getText().toString());
-                    mTotal.setText("R$ "+ total.toString());
+
+                   Double total = calculaTotalParcial(Integer.parseInt(mEdtQuantidade.getText().toString()), Double.parseDouble(mValorUnitario.getText().toString()));
+
+                    mTotal.setText("R$ "+total.toString());
                 }
             }
         });
@@ -70,5 +72,11 @@ public class ResumoProdutoAdapter extends ArrayAdapter<Produto> {
 
 
         return listView;
+    }
+
+    public Double calculaTotalParcial(int quantidade, Double valorUnitario){
+
+
+        return quantidade*valorUnitario;
     }
 }
