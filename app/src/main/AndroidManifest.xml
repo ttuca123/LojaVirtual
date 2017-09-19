@@ -31,8 +31,11 @@
         <activity
             android:name="com.google.android.gms.ads.AdActivity"
             android:configChanges="keyboard|keyboardHidden|orientation|screenLayout|uiMode|screenSize|smallestScreenSize"
-            android:screenOrientation="portrait" />
-        <activity android:name=".activity.ActResumoCompras"></activity>
+            android:screenOrientation="portrait"
+
+            />
+        <activity android:name=".activity.ActResumoCompras"
+            ></activity>
     </application>
 
 </manifest>

@@ -10,6 +10,10 @@
 
 
     <style name="Botao" parent="Widget.AppCompat.Button.Borderless.Colored">
+    <item name="android:textColor">@color/colorLight</item>
+</style>
+
+    <style name="Dialogo" parent="@android:style/Theme.Dialog">
         <item name="android:textColor">@color/colorLight</item>
     </style>
 

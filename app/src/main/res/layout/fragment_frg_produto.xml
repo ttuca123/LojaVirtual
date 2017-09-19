@@ -4,42 +4,38 @@
     android:orientation="vertical"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:weightSum="1">
+    android:weightSum="10">
 
-    <LinearLayout
-        android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:orientation="vertical"
-        android:weightSum="1">
-
-        <GridView
-            android:id="@+id/gdvProdutos"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_above="@+id/btnAdcionarCarrinho"
-            android:layout_alignParentStart="true"
-            android:layout_alignParentTop="true"
-            android:layout_weight="1"
-            android:background="@color/colorPrimaryDark"
-            android:columnWidth="150dp"
-            android:gravity="center"
-            android:horizontalSpacing="5dp"
-            android:numColumns="auto_fit"
-            android:verticalSpacing="10dp"
-            tools:listitem="@layout/produto_item" />
 
         <Button
             android:id="@+id/btnAdcionarCarrinho"
             style="@style/Botao"
             android:layout_width="match_parent"
-            android:layout_height="80dp"
+            android:layout_height="wrap_content"
 
-            android:layout_gravity="bottom|center_vertical|center|end"
-            android:layout_marginBottom="2dp"
             android:background="@color/colorPrimaryDark"
+
             android:text="@string/btn_add_buy"
             android:textAlignment="center"
-            android:textSize="18sp" />
-    </LinearLayout>
+            android:textSize="14sp"
+            android:layout_alignParentStart="true" />
+
+        <GridView
+            android:id="@+id/gdvProdutos"
+            style="@android:style/Widget.DeviceDefault.GridView"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_above="@+id/btnAdcionarCarrinho"
+            android:layout_alignParentStart="true"
+
+            android:background="@color/colorPrimaryDark"
+            android:columnWidth="150dp"
+            android:foregroundGravity="top"
+            android:gravity="top|center"
+            android:horizontalSpacing="5dp"
+            android:numColumns="auto_fit"
+            android:verticalSpacing="5dp"
+            tools:listitem="@layout/produto_item" />
+
 
 </LinearLayout>

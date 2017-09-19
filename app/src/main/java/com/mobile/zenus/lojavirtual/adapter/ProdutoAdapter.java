@@ -1,7 +1,6 @@
 package com.mobile.zenus.lojavirtual.adapter;
 
 import android.content.Context;
-import android.support.v7.widget.RecyclerView;
 
 import android.view.LayoutInflater;
 import android.view.View;
@@ -78,7 +77,7 @@ public class ProdutoAdapter extends BaseAdapter {
        final View textView = gridView;
 
         ImageView mImagemProduto = (ImageView) gridView.findViewById(R.id.imgProduto);
-        TextView  mPreco = (TextView) gridView.findViewById(R.id.txtValor);
+        TextView  mPreco = (TextView) gridView.findViewById(R.id.txtDescPreco);
         TextView  mDescricao = (TextView) gridView.findViewById(R.id.txtDescricao);
         final CheckBox mChkProduto = (CheckBox) gridView.findViewById(R.id.chkProduto);
 
