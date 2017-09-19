@@ -1,4 +1,4 @@
-<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:orientation="vertical"
@@ -14,10 +14,10 @@
             android:layout_height="wrap_content"
 
             android:background="@color/colorPrimaryDark"
-
             android:text="@string/btn_add_buy"
             android:textAlignment="center"
             android:textSize="14sp"
+            android:layout_alignParentBottom="true"
             android:layout_alignParentStart="true" />
 
         <GridView
@@ -25,9 +25,11 @@
             style="@android:style/Widget.DeviceDefault.GridView"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
+
+
             android:layout_above="@+id/btnAdcionarCarrinho"
             android:layout_alignParentStart="true"
-
+            android:layout_alignParentTop="true"
             android:background="@color/colorPrimaryDark"
             android:columnWidth="150dp"
             android:foregroundGravity="top"
@@ -38,4 +40,4 @@
             tools:listitem="@layout/produto_item" />
 
 
-</LinearLayout>
+</RelativeLayout>

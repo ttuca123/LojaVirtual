@@ -1,9 +1,11 @@
 package com.mobile.zenus.lojavirtual.activity;
 
+import android.content.Context;
 import android.content.DialogInterface;
 import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
+import android.util.AttributeSet;
 import android.view.ContextThemeWrapper;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -21,6 +23,7 @@ public class ActResumoCompras extends AppCompatActivity {
 
     ListView mLstResumoCompras;
     Button mBtnFinalizarCompra;
+    AlertDialog.Builder alertDialog;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -37,21 +40,23 @@ public class ActResumoCompras extends AppCompatActivity {
 
         mBtnFinalizarCompra.setOnClickListener(new View.OnClickListener() {
             @Override
-            public void onClick(View v) {
+            public void onClick(final View viewSecundaria) {
 
-                AlertDialog.Builder alertDialog = new AlertDialog.Builder(new ContextThemeWrapper(getBaseContext(), R.style.Dialogo));
+                 alertDialog = new AlertDialog.Builder(viewSecundaria.getContext());
 
 
-//                View viewSecundaria = LayoutInflater.inflate(R.layout.dialog_confirma_venda, null, false);
+
 
                 alertDialog.setTitle("Resumo Total: R$ 30,00 em compras");
 
                 alertDialog.setMessage("Confirma transação?");
 
+
+
                 alertDialog.setPositiveButton("Sim", new DialogInterface.OnClickListener() {
                     @Override
                     public void onClick(DialogInterface dialog, int which) {
-                        AlertDialog.Builder alertDialogConfirmacao = new AlertDialog.Builder(new ContextThemeWrapper(getBaseContext(), R.style.Dialogo));
+                        AlertDialog.Builder alertDialogConfirmacao = new AlertDialog.Builder(viewSecundaria.getContext());
 
 
 
@@ -59,7 +64,7 @@ public class ActResumoCompras extends AppCompatActivity {
 
                         alertDialogConfirmacao.setMessage("Sua compra foi realizada com sucesso!!!");
 
-                        alertDialogConfirmacao.setNeutralButton("OK", new DialogInterface.OnClickListener() {
+                        alertDialogConfirmacao.setPositiveButton("OK", new DialogInterface.OnClickListener() {
                             @Override
                             public void onClick(DialogInterface dialog, int which) {
                                 dialog.dismiss();
@@ -83,4 +88,6 @@ public class ActResumoCompras extends AppCompatActivity {
 
 
     }
+
+
 }
