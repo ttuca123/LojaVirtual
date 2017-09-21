@@ -130,7 +130,7 @@
             android:textSize="18sp" />
 
         <TextView
-            android:id="@+id/txtTotal"
+            android:id="@+id/txtTotalParcial"
             android:layout_width="wrap_content"
             android:layout_height="match_parent"
 

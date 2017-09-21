@@ -5,9 +5,65 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:orientation="vertical"
+    android:id="@+id/resumoview"
     tools:context="com.mobile.zenus.lojavirtual.activity.ActResumoCompras"
     android:weightSum="1">
 
+
+    <LinearLayout
+        android:id="@+id/linearLayout"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="vertical"
+        android:layout_alignParentBottom="true"
+        android:layout_centerHorizontal="true">
+
+        <Button
+            android:id="@+id/btnCalculaTotal"
+            style="@style/Botao"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_alignParentBottom="true"
+            android:layout_alignParentEnd="true"
+            android:layout_alignParentStart="true"
+            android:background="@color/colorPrimaryDark"
+
+            android:text="Calcular Total"
+            android:textAlignment="center"
+            tools:layout_editor_absoluteX="8dp"
+            tools:layout_editor_absoluteY="0dp" />
+
+        <TextView
+            android:id="@+id/txtResumo"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:background="@color/colorPrimary"
+            android:textAlignment="textStart"
+
+            android:textAllCaps="true"
+            android:textAppearance="@style/TextAppearance.AppCompat.Display1"
+            android:textColor="@color/colorLight"
+            android:textSize="24sp"
+            android:visibility="gone" />
+
+        <Button
+            android:id="@+id/btnFinalizarCompra"
+            style="@style/Botao"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_alignParentBottom="true"
+            android:layout_alignParentEnd="true"
+            android:layout_alignParentStart="true"
+            android:alpha="0.5"
+
+            android:background="@color/colorPrimaryDark"
+            android:enabled="false"
+            android:text="@string/btn_end_buy"
+            android:textAlignment="center"
+            tools:layout_editor_absoluteX="8dp"
+            tools:layout_editor_absoluteY="0dp" />
+
+    </LinearLayout>
 
     <ListView
         android:id="@+id/lstResumoCompras"
@@ -17,21 +73,7 @@
         android:layout_alignParentTop="true"
         android:background="@color/colorPrimary"
         tools:listitem="@layout/compra_resumo_item"
-        android:layout_above="@+id/btnFinalizarCompra" />
 
-    <Button
-        android:id="@+id/btnFinalizarCompra"
-        style="@style/Botao"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_alignParentBottom="true"
-        android:layout_alignParentEnd="true"
-        android:layout_alignParentStart="true"
-        android:background="@color/colorPrimaryDark"
-
-        android:text="@string/btn_end_buy"
-        android:textAlignment="center"
-        tools:layout_editor_absoluteX="8dp"
-        tools:layout_editor_absoluteY="0dp" />
+        android:layout_above="@+id/linearLayout" />
 
 </RelativeLayout>

@@ -3,6 +3,7 @@ package com.mobile.zenus.lojavirtual.adapter;
 import android.content.Context;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
+import android.view.KeyEvent;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -11,29 +12,46 @@ import android.widget.EditText;
 import android.widget.TextView;
 
 import com.mobile.zenus.lojavirtual.R;
+import com.mobile.zenus.lojavirtual.presenter.ActResumoPresenter;
+import com.mobile.zenus.lojavirtual.view.ActResumoView;
 import com.mobile.zenus.lojavirtual.vo.Produto;
 
+import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.Collection;
 import java.util.List;
 
 /**
  * Created by Tuca on 18/09/2017.
  */
 
-public class ResumoProdutoAdapter extends ArrayAdapter<Produto> {
+public class ResumoProdutoAdapter extends ArrayAdapter<Produto> implements ActResumoPresenter{
 
-    private final Context context;
-    private final List<Produto> produtos;
+    private  Context context;
+    private  List<Produto> produtos;
+
+
     private LayoutInflater inflater;
+    private ActResumoView resumoView;
 
-    public ResumoProdutoAdapter (Context context, List<Produto> produtos){
+
+
+    public ResumoProdutoAdapter (ActResumoView resumoView, Context context, List<Produto> produtos){
         super(context, R.layout.compra_resumo_item, produtos);
         this.context = context;
-        this.produtos = produtos;
+        this.produtos = new ArrayList<Produto>();
+        this.produtos.addAll(produtos);
+        this.resumoView = resumoView;
+
     }
+
+
+
+
 
     @NonNull
     @Override
-    public View getView(int position, @Nullable View convertView, @NonNull ViewGroup parent) {
+    public View getView(final int position, @Nullable View convertView, @NonNull ViewGroup parent) {
 
         View listView = convertView;
 
@@ -44,38 +62,59 @@ public class ResumoProdutoAdapter extends ArrayAdapter<Produto> {
             listView = inflater.inflate(R.layout.compra_resumo_item, null);
         }
 
-        TextView mDescricao = (TextView) listView.findViewById(R.id.txtDescricao);
+         TextView mDescricao = (TextView) listView.findViewById(R.id.txtDescricao);
 
-        final TextView mValorUnitario = (TextView) listView.findViewById(R.id.txtPrecoUnitario);
-        final TextView mTotal = (TextView) listView.findViewById(R.id.txtTotal);
-        final EditText mEdtQuantidade = (EditText) listView.findViewById(R.id.edtQtd);
+         TextView mValorUnitario = (TextView) listView.findViewById(R.id.txtPrecoUnitario);
+         final TextView mTotalParcial = (TextView) listView.findViewById(R.id.txtTotalParcial);
+         EditText mEdtQuantidade = (EditText) listView.findViewById(R.id.edtQtd);
 
-        mDescricao.setText((position+1) + " - "+produtos.get(position).getDescProduto());
-        mValorUnitario.setText(produtos.get(position).getPreco().toString());
+         mDescricao.setText((position+1) + " - "+produtos.get(position).getDescProduto());
 
-        Double total = calculaTotalParcial(Integer.parseInt(mEdtQuantidade.getText().toString()), Double.parseDouble(mValorUnitario.getText().toString()));
+         mValorUnitario.setText(produtos.get(position).getPreco().toString());
 
-        mTotal.setText("R$ "+total.toString());
+         int valor = mEdtQuantidade.getText().toString().isEmpty()?1:Integer.parseInt(mEdtQuantidade.getText().toString());
 
-        mEdtQuantidade.setOnFocusChangeListener(new View.OnFocusChangeListener() {
+         produtos.get(position).setQuantidade(valor);
+
+         produtos.get(position).setPreco(Double.parseDouble(mValorUnitario.getText().toString()));
+
+         Double totalParcial = calculaTotalParcial(produtos.get(position).getQuantidade()
+                , produtos.get(position).getPreco());
+
+         mTotalParcial.setText(totalParcial.toString());
+
+        mEdtQuantidade.setOnEditorActionListener(new TextView.OnEditorActionListener() {
             @Override
-            public void onFocusChange(View v, boolean hasFocus) {
-                if(mEdtQuantidade.getText().length()>0){
+            public boolean onEditorAction(TextView v, int actionId, KeyEvent event) {
 
-                   Double total = calculaTotalParcial(Integer.parseInt(mEdtQuantidade.getText().toString()), Double.parseDouble(mValorUnitario.getText().toString()));
 
-                    mTotal.setText("R$ "+total.toString());
+                if(!v.getText().toString().isEmpty() && !v.getText().toString().equals("0")){
+
+                    int quantidade = Integer.parseInt(v.getText().toString());
+
+                    Double totalParcial = calculaTotalParcial(quantidade,
+                            produtos.get(position).getPreco());
+
+                    mTotalParcial.setText(totalParcial.toString());
+
+                    resumoView.habilitarRecalculo();
+
+                    notifyDataSetChanged();
+
                 }
+
+                   return false;
             }
         });
-
-
 
         return listView;
     }
 
-    public Double calculaTotalParcial(int quantidade, Double valorUnitario){
+    private Double calculaTotalParcial(int quantidade, Double valorUnitario){
 
+        if(quantidade==0){
+            quantidade=1;
+        }
 
         return quantidade*valorUnitario;
     }

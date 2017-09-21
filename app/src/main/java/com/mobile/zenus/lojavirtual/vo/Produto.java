@@ -18,7 +18,7 @@ public class Produto implements Parcelable {
 
     Double preco;
 
-    int quantidade;
+    Integer quantidade;
 
     boolean isSelecionado;
 
@@ -95,11 +95,20 @@ public class Produto implements Parcelable {
         this.preco = preco;
     }
 
-    public int getQuantidade() {
+    public Integer getQuantidade() {
+
+        if(quantidade==null){
+
+            quantidade=new Integer(1);
+        }
+
         return quantidade;
     }
 
-    public void setQuantidade(int quantidade) {
+    public void setQuantidade(Integer quantidade) {
+
+
+
         this.quantidade = quantidade;
     }
 
@@ -111,7 +120,7 @@ public class Produto implements Parcelable {
     @Override
     public void writeToParcel(Parcel dest, int flags) {
         dest.writeString(descProduto);
-        dest.writeInt(quantidade);
+        dest.writeInt(getQuantidade().intValue());
         dest.writeByte((byte) (isSelecionado ? 1 : 0));
         dest.writeDouble(preco);
         dest.writeString(pathImagem);
