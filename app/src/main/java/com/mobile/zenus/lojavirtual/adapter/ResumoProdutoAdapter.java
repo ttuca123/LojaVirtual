@@ -16,11 +16,6 @@ import com.mobile.zenus.lojavirtual.presenter.ActResumoPresenter;
 import com.mobile.zenus.lojavirtual.view.ActResumoView;
 import com.mobile.zenus.lojavirtual.vo.Produto;
 
-import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.Collection;
-import java.util.List;
-
 /**
  * Created by Tuca on 18/09/2017.
  */
@@ -28,87 +23,135 @@ import java.util.List;
 public class ResumoProdutoAdapter extends ArrayAdapter<Produto> implements ActResumoPresenter{
 
     private  Context context;
-    private  List<Produto> produtos;
-
 
     private LayoutInflater inflater;
     private ActResumoView resumoView;
+    private View listView;
 
 
-
-    public ResumoProdutoAdapter (ActResumoView resumoView, Context context, List<Produto> produtos){
-        super(context, R.layout.compra_resumo_item, produtos);
+    public ResumoProdutoAdapter (ActResumoView resumoView, Context context){
+        super(context, R.layout.compra_resumo_item);
         this.context = context;
-        this.produtos = new ArrayList<Produto>();
-        this.produtos.addAll(produtos);
         this.resumoView = resumoView;
+
+        inflater = (LayoutInflater) context.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
+
+        listView = inflater.inflate(R.layout.compra_resumo_item, null);
 
     }
 
-
-
-
-
     @NonNull
     @Override
-    public View getView(final int position, @Nullable View convertView, @NonNull ViewGroup parent) {
+    public  View getView(final int position, @Nullable View convertView, @NonNull ViewGroup parent) {
 
-        View listView = convertView;
+        listView = convertView;
 
-        if(listView == null){
+        if(listView == null) {
 
             inflater = (LayoutInflater) context.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
 
             listView = inflater.inflate(R.layout.compra_resumo_item, null);
         }
 
-         TextView mDescricao = (TextView) listView.findViewById(R.id.txtDescricao);
+        Produto produto = getItem(position);
 
-         TextView mValorUnitario = (TextView) listView.findViewById(R.id.txtPrecoUnitario);
-         final TextView mTotalParcial = (TextView) listView.findViewById(R.id.txtTotalParcial);
-         EditText mEdtQuantidade = (EditText) listView.findViewById(R.id.edtQtd);
+        TextView mDescricao = (TextView) listView.findViewById(R.id.txtDescricao);
 
-         mDescricao.setText((position+1) + " - "+produtos.get(position).getDescProduto());
+        TextView mValorUnitario = (TextView) listView.findViewById(R.id.txtPrecoUnitario);
 
-         mValorUnitario.setText(produtos.get(position).getPreco().toString());
+        TextView mTotalParcial = (TextView) listView.findViewById(R.id.txtTotalParcial);
 
-         int valor = mEdtQuantidade.getText().toString().isEmpty()?1:Integer.parseInt(mEdtQuantidade.getText().toString());
+        EditText mEdtQuantidade = (EditText) listView.findViewById(R.id.edtQtd);
 
-         produtos.get(position).setQuantidade(valor);
+        mDescricao.setText(produto.getDescProduto());
 
-         produtos.get(position).setPreco(Double.parseDouble(mValorUnitario.getText().toString()));
+        mValorUnitario.setText(produto.getPreco().toString());
 
-         Double totalParcial = calculaTotalParcial(produtos.get(position).getQuantidade()
-                , produtos.get(position).getPreco());
+        Double totalParcial = produto.getPreco()*produto.getQuantidade();
 
-         mTotalParcial.setText(totalParcial.toString());
+        mTotalParcial.setText(totalParcial.toString());
+
+        if(mEdtQuantidade.getText().toString().isEmpty() || mEdtQuantidade.getText().toString().equals("0")){
+
+            mEdtQuantidade.setError(listView.getResources().getString(R.string.msg_error_item));
+            mEdtQuantidade.requestFocus();
+            mValorUnitario.setText("####");
+            mTotalParcial.setText("######");
+
+
+            verificarOperacaoCalculo(mEdtQuantidade.getText().toString());
+        }
+
+        mEdtQuantidade.setOnFocusChangeListener(new View.OnFocusChangeListener() {
+            @Override
+            public void onFocusChange(View view, boolean hasFocus) {
+
+                EditText editar = (EditText) view;
+
+                if(!editar.getText().toString().isEmpty()){
+
+                    int valor=Integer.parseInt(editar.getText().toString());
+
+                    getItem(position).setQuantidade(valor);
+
+                    notifyDataSetChanged();
+                }
+
+                verificarOperacaoCalculo(editar.getText().toString());
+            }
+        });
+
+        mEdtQuantidade.setOnKeyListener(new View.OnKeyListener() {
+            @Override
+            public boolean onKey(View view, int keyCode, KeyEvent event) {
+
+                EditText editText = (EditText) view;
+
+                verificarOperacaoCalculo(editText.getText().toString());
+
+                return false;
+            }
+        });
+
 
         mEdtQuantidade.setOnEditorActionListener(new TextView.OnEditorActionListener() {
             @Override
-            public boolean onEditorAction(TextView v, int actionId, KeyEvent event) {
+            public boolean onEditorAction(TextView texto, int actionId, KeyEvent event) {
 
+                if(!texto.getText().toString().isEmpty()){
 
-                if(!v.getText().toString().isEmpty() && !v.getText().toString().equals("0")){
+                    int valor=Integer.parseInt(texto.getText().toString());
 
-                    int quantidade = Integer.parseInt(v.getText().toString());
-
-                    Double totalParcial = calculaTotalParcial(quantidade,
-                            produtos.get(position).getPreco());
-
-                    mTotalParcial.setText(totalParcial.toString());
-
-                    resumoView.habilitarRecalculo();
+                    getItem(position).setQuantidade(valor);
 
                     notifyDataSetChanged();
-
                 }
 
-                   return false;
+                verificarOperacaoCalculo(texto.getText().toString());
+
+
+                return false;
             }
         });
 
         return listView;
     }
+
+    private void verificarOperacaoCalculo(String texto){
+        if(!texto.isEmpty()){
+            resumoView.habilitarBotaoCalcularTotal();
+
+            resumoView.habilitarBotaoFinalizar();
+        }else{
+
+            resumoView.desabilitarBotaoFinalizar();
+
+            resumoView.desabilitarBotaoCalcularTotal();
+
+        }
+    }
+
+
 
     private Double calculaTotalParcial(int quantidade, Double valorUnitario){
 

@@ -9,9 +9,9 @@
 
     <string name="navigation_drawer_open">Abrir drawer</string>
     <string name="navigation_drawer_close">Fechar navigation drawer</string>
-    <string name="btn_add_buy">Adicionar Carrinho</string>
 
-    <string name="btn_end_buy">Finalizar Compra</string>
+    <!--Operações Básicas !-->
+
 
     <string name="desc_product">Abacaxi</string>
 
@@ -19,6 +19,47 @@
 
     <string name="action_settings">Configurações</string>
 
-    <!-- TODO: Remove or change this placeholder text -->
     <string name="about_text">Desenvolvido por Artur Cavalcante</string>
+
+    <!--Nomes de Botões !-->
+
+    <string name="btn_calc">Calcular Total</string>
+
+    <string name="btn_recalc">Recalcular Total</string>
+
+    <string name="btn_add_buy">Adicionar Carrinho</string>
+
+    <string name="btn_end_buy">Finalizar Compra</string>
+
+    <string name="btn_ok">OK</string>
+
+    <string name="btn_positive">Sim</string>
+
+    <string name="btn_negative">Não</string>
+
+    <!--Labels !-->
+
+    <string name="desc_total">Total - R$ %1$s</string>
+
+    <string name="purshase_made"> Compra Efetuada</string>
+
+    <string name="purshase_sucessful"> Sua compra foi efetuada com sucesso!!!</string>
+
+    <string name="confirm_transaction"> Confirma Transação?</string>
+
+    <string name="waiting_recalc">Aguardando Recálculo</string>
+
+    <string name="recalc_total">Recalcular Total</string>
+
+
+    <!--Mensagens do sistema !-->
+
+    <string name="msg_error">Por favor, preencha todos os campos referentes á quantidade dos produtos</string>
+
+    <string name="msg_error_item">Por favor, preencha o campo com valores a partir de 1 unidade</string>
+
+    <string name="title_error">Erro</string>
+
+
+
 </resources>

@@ -2,10 +2,12 @@ package com.mobile.zenus.lojavirtual.activity;
 
 import android.content.DialogInterface;
 import android.content.Intent;
+import android.os.Bundle;
 import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
-import android.os.Bundle;
+import android.view.MotionEvent;
 import android.view.View;
+import android.widget.AdapterView;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ListView;
@@ -28,8 +30,8 @@ public class ActResumoCompras extends AppCompatActivity implements ActResumoView
     TextView mTotal;
     ResumoProdutoAdapter resumoProdutoAdapter;
 
+    List<Produto> produtos;
 
-    private String total;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -44,77 +46,27 @@ public class ActResumoCompras extends AppCompatActivity implements ActResumoView
 
         Intent it = getIntent();
 
-        List<Produto>  produtos = it.getParcelableArrayListExtra("produtos");
+        produtos = new ArrayList<Produto>();
 
-        resumoProdutoAdapter = new ResumoProdutoAdapter(this, this, produtos);
+        final List<Produto>  produtosAdapter = it.getParcelableArrayListExtra("produtos");
+
+        produtos.addAll(produtosAdapter);
+
+        resumoProdutoAdapter = new ResumoProdutoAdapter(this, this);
+
+        resumoProdutoAdapter.addAll(produtosAdapter);
 
         mLstResumoCompras.setAdapter(resumoProdutoAdapter);
 
-        mLstResumoCompras.setClickable(true);
-
         mBtnFinalizarCompra = (Button) findViewById(R.id.btnFinalizarCompra);
 
-        mBtnFinalizarCompra.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(final View viewSecundaria) {
-
-                AlertDialog.Builder alertDialog = new AlertDialog.Builder(viewSecundaria.getContext());
-
-                String total = calcularTotal();
-
-                alertDialog.setTitle("Resumo Total: R$ " + total + " em compras");
-
-                alertDialog.setMessage("Confirma transação?");
-
-                alertDialog.setPositiveButton("Sim", new DialogInterface.OnClickListener() {
-                    @Override
-                    public void onClick(DialogInterface dialog, int which) {
-                        AlertDialog.Builder alertDialogConfirmacao = new AlertDialog.Builder(viewSecundaria.getContext());
-
-                        alertDialogConfirmacao.setTitle("Compra Efetuada");
-
-                        alertDialogConfirmacao.setMessage("Sua compra foi realizada com sucesso!!!");
-
-                        alertDialogConfirmacao.setPositiveButton("OK", new DialogInterface.OnClickListener() {
-                            @Override
-                            public void onClick(DialogInterface dialog, int which) {
-                                dialog.dismiss();
-
-                                Intent it = new Intent(ActResumoCompras.this, ActMain.class);
-
-                                startActivity(it);
-                            }
-                        });
-                        alertDialogConfirmacao.show();
-                    }
-                });
-
-                alertDialog.setNegativeButton("Não", new DialogInterface.OnClickListener() {
-                    @Override
-                    public void onClick(DialogInterface dialog, int which) {
-                        dialog.dismiss();
-
-
-
-                        mTotal.setVisibility(View.GONE);
-
-                        habilitarRecalculo();
-                    }
-                });
-
-
-                alertDialog.show();
-            }
-        });
         mBtnCalculaTotal.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
 
-               Double total = Double.parseDouble(calcularTotal());
+               if (Double.parseDouble(calcularTotal())>0.0) {
 
-                if(total>0.0) {
-
-                    desabilitarBotaoCalcularTotal();
+//                    desabilitarBotaoCalcularTotal();
 
                     habilitarBotaoFinalizar();
 
@@ -124,32 +76,119 @@ public class ActResumoCompras extends AppCompatActivity implements ActResumoView
     }
 
 
+    public void finalizarCompra(final View viewSecundaria){
+
+        AlertDialog.Builder alertDialog = new AlertDialog.Builder(viewSecundaria.getContext());
+
+        String total = calcularTotal();
+
+        alertDialog.setTitle(getString(R.string.desc_total, total));
+
+        alertDialog.setMessage(getString(R.string.confirm_transaction));
+
+        alertDialog.setPositiveButton(getResources().getString(R.string.btn_positive), new DialogInterface.OnClickListener() {
+            @Override
+            public void onClick(DialogInterface dialog, int which) {
+
+                AlertDialog.Builder alertDialogConfirmacao = new AlertDialog.Builder(viewSecundaria.getContext());
+
+                alertDialogConfirmacao.setTitle(getResources().getString(R.string.purshase_made));
+
+                alertDialogConfirmacao.setMessage(getResources().getString(R.string.purshase_sucessful));
+
+                alertDialogConfirmacao.setPositiveButton(R.string.btn_ok, new DialogInterface.OnClickListener() {
+                    @Override
+                    public void onClick(DialogInterface dialog, int which) {
+                        dialog.dismiss();
+
+                        Intent it = new Intent(ActResumoCompras.this, ActMain.class);
+
+                        startActivity(it);
+                    }
+                });
+                alertDialogConfirmacao.show();
+            }
+        });
+
+        alertDialog.setNegativeButton(getResources().getString(R.string.btn_negative), new DialogInterface.OnClickListener() {
+            @Override
+            public void onClick(DialogInterface dialog, int which) {
+                dialog.dismiss();
+
+                mTotal.setVisibility(View.GONE);
+
+                habilitarRecalculo();
+            }
+        });
+
+
+        alertDialog.show();
+
+    }
+
+    private boolean verificarValorVazio(){
+
+        boolean isValorVazio=false;
+
+        for(int i=0; i< mLstResumoCompras.getAdapter().getCount(); i++){
+
+            Produto produto = (Produto) mLstResumoCompras.getAdapter().getItem(i);
+
+            if(produto.getQuantidade()==0){
+                isValorVazio=true;
+                break;
+            }
+        }
+        return isValorVazio;
+
+    }
+
+
+    private Double somarTotal(boolean isValorVazio){
+
+        Double total = 0.0;
+
+        if(!isValorVazio) {
+
+            for (int i = 0; i < mLstResumoCompras.getAdapter().getCount(); i++) {
+
+                Produto produto = (Produto) mLstResumoCompras.getAdapter().getItem(i);
+
+                total += produto.getQuantidade()*produto.getPreco();
+            }
+        }
+
+        return total;
+
+    }
+
+
+
+    public View getViewByPosition(int position, ListView listView) {
+        final int firstListItemPosition = listView.getFirstVisiblePosition();
+        final int lastListItemPosition = firstListItemPosition + listView.getChildCount() - 1;
+
+        if (position < firstListItemPosition || position > lastListItemPosition ) {
+            return listView.getAdapter().getView(position, listView.getChildAt(position), listView);
+        } else {
+            final int childIndex = position - firstListItemPosition;
+            return listView.getChildAt(childIndex);
+        }
+    }
+
 
     @Override
     public String calcularTotal(){
 
         mTotal.setVisibility(View.VISIBLE);
 
-        Double total=0.0;
-        boolean isValorVazio = false;
+        Double total =0.0;
 
-        for(int i=0; i< mLstResumoCompras.getCount(); i++){
-
-            Produto produto = (Produto) mLstResumoCompras.getItemAtPosition(i);
-
-//            EditText qtd = (EditText) view.findViewById(R.id.edtQtd);
-//
-//            TextView preco = (TextView) view.findViewById(R.id.txtPrecoUnitario);
-
-            if(produto.getQuantidade()==0){
-                isValorVazio=true;
-                break;
-            }
-            total += (produto.getQuantidade()*produto.getPreco());
-        }
-
+        boolean isValorVazio = verificarValorVazio();
 
         if(!isValorVazio) {
+
+            total = somarTotal(isValorVazio);
 
             preencherTotal(total.toString());
 
@@ -157,11 +196,11 @@ public class ActResumoCompras extends AppCompatActivity implements ActResumoView
 
             AlertDialog.Builder alert = new AlertDialog.Builder(this);
 
-            alert.setTitle("Erro");
+            alert.setTitle(getResources().getString(R.string.title_error));
 
-            alert.setMessage("Por favor, preencha todos os campos referentes á quantidade dos produtos");
+            alert.setMessage(getResources().getString(R.string.msg_error));
 
-            alert.setPositiveButton("OK", new DialogInterface.OnClickListener() {
+            alert.setPositiveButton(getResources().getString(R.string.btn_ok), new DialogInterface.OnClickListener() {
                 @Override
                 public void onClick(DialogInterface dialog, int which) {
 
@@ -180,13 +219,15 @@ public class ActResumoCompras extends AppCompatActivity implements ActResumoView
     @Override
     public void preencherTotal(String total) {
 
-        mTotal.setText("Total - R$ "+total);
+        String desc = getString(R.string.desc_total, total);
+
+        mTotal.setText(desc);
     }
 
     @Override
     public void habilitarRecalculo() {
 
-        mTotal.setText("Aguardando Recalculo");
+        mTotal.setText(getString(R.string.waiting_recalc));
         habilitarBotaoCalcularTotal();
         desabilitarBotaoFinalizar();
     }
@@ -201,7 +242,7 @@ public class ActResumoCompras extends AppCompatActivity implements ActResumoView
     @Override
     public void habilitarBotaoCalcularTotal() {
 
-        mBtnCalculaTotal.setText("Recalcular Total");
+        mBtnCalculaTotal.setText(getString(R.string.recalc_total));
         mBtnCalculaTotal.setEnabled(true);
         mBtnCalculaTotal.setAlpha(1);
     }
@@ -217,7 +258,7 @@ public class ActResumoCompras extends AppCompatActivity implements ActResumoView
     @Override
     public void desabilitarBotaoCalcularTotal() {
 
-        mBtnCalculaTotal.setText("Recalcular Total");
+        mBtnCalculaTotal.setText(getString(R.string.recalc_total));
         mBtnCalculaTotal.setEnabled(false);
         mBtnCalculaTotal.setAlpha(0.5f);
     }
